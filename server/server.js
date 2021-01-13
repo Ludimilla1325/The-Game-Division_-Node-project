@@ -40,18 +40,43 @@ app.get('/register', (req,res)=>{
    res.render('register') 
 })
 
+app.get('/login',(req,res)=>{
+    if (req.user) return res.redirect('/dashboard');
+    res.render('login')
+})
+
+
 //POST
 app.post('/api/register',(req,res)=>{
     //console.log(req.body)
     const user = new User(req.body);
 
     user.save((err,doc)=>{
-        if (err) res.status(400).send(err);
-        res.render('register')
-        user.generateToken((err,user)=>{
-            if (err) res.status(400).send(err);
+        if (err) return res.status(400).send(err);
+        //res.render('register')
+
+        user.generateToken((er,user)=>{
+            if (err) return res.status(400).send(err);
             res.cookie('auth', user.token).send('ok');
-            
+
+        })
+    })
+})
+
+app.post('/api/login', (req,res) =>{
+    //console.log(req.body)
+
+    User.findOne({'email':req.body.email},(err,user) =>{
+        if(!user) return res.status(400).json({message:'auth failed, wrong email'})
+
+        user.comparePassword(req.body.password, function(err, isMatch){
+            if(err) throw err;
+            if(!isMatch) return res.status(400).json({message:"Auth failed, wrong password"});
+
+            user.generateToken((er,user)=>{
+                if (err) return res.status(400).send (err);
+                res.cookie('auth', user.token).send('ok');
+            })
         })
     })
 })

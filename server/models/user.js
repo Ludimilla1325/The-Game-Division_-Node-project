@@ -46,7 +46,7 @@ const userSchema = mongoose.Schema({
 userSchema.pre('save', function(next){
     var user = this;
 
-    if (user.isModified()){
+    if (user.isModified('password')){
         bcrypt.genSalt(SALT_I,function(err, salt){
             if(err) return next (err);
             bcrypt.hash(user.password, salt, function(err, hash){
@@ -56,19 +56,28 @@ userSchema.pre('save', function(next){
             })
         })
     }else {
-
+        next();
     }
 })
 
 // CREATING A CUSTOM METHOD - generating the token
 userSchema.methods.generateToken = function(cb){
     var user = this;
+    
     var token = jwt.sign(user._id.toHexString(), config.SECRET);
 
     user.token = token;
     user.save((err,user)=>{
         if (err) return cb(err);
         cb(null,user)
+    })
+}
+
+userSchema.methods.comparePassword = function(candidatePassord, cb){
+    
+    bcrypt.compare(candidatePassord, this.password, function(err, isMatch){
+        if(err) return cb(err); 
+        cb(null, isMatch);
     })
 }
 

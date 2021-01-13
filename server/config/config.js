@@ -6,11 +6,10 @@ const config = {
     },
     default:{
         SECRET:'nunewiucnweimqke',
-        DATABASE:'mongodb://localhost:27017/tgd_app',
+        DATABASE:"mongodb://localhost:27017/tgd_app", //{ useNewUrlParser: true }, { useUnifiedTopology: true }),
         PORT:3000
     }
 }
-
 exports.get = function get(env){
     return config[env] || config.default
 }
