@@ -32,6 +32,7 @@ app.use('/js', express.static(__dirname + './../public/js'));
 const {auth} = require('./middleware/auth');
 app.use(bodyParser.json());
 app.use(cookieParser());
+
 // GET
 app.get('/', (req,res) =>{
     res.render('home')
@@ -47,6 +48,13 @@ app.get('/login',auth,(req,res)=>{
     res.render('login')
 })
 
+app.get('/dashboard',auth,(req,res)=>{
+    if (!req.user) return res.redirect('/login');
+    res.render('dashboard', {
+        dashboard:true,
+        isAdmin: req.user.role === 1 ? true : false
+    })
+})
 
 //POST
 app.post('/api/register',(req,res)=>{

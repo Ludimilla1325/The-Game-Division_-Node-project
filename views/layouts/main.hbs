@@ -18,7 +18,9 @@
 </head>
 
 <body>
-    {{>header}}
+    {{#unless dashboard}}
+        {{>header}}
+    {{/unless}}
     {{{body}}}
 
 </body>
