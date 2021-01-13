@@ -29,6 +29,7 @@ const {User} = require ('./models/user');
 app.use('/css', express.static(__dirname + './../public/css'));
 app.use('/js', express.static(__dirname + './../public/js'));
 
+const {auth} = require('./middleware/auth');
 app.use(bodyParser.json());
 app.use(cookieParser());
 // GET
@@ -36,11 +37,12 @@ app.get('/', (req,res) =>{
     res.render('home')
 })
 
-app.get('/register', (req,res)=>{
+app.get('/register',auth, (req,res)=>{
+    if (req.user) return res.redirect('/dashboard');
    res.render('register') 
 })
 
-app.get('/login',(req,res)=>{
+app.get('/login',auth,(req,res)=>{
     if (req.user) return res.redirect('/dashboard');
     res.render('login')
 })
@@ -53,7 +55,6 @@ app.post('/api/register',(req,res)=>{
 
     user.save((err,doc)=>{
         if (err) return res.status(400).send(err);
-        //res.render('register')
 
         user.generateToken((er,user)=>{
             if (err) return res.status(400).send(err);

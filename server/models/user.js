@@ -60,6 +60,17 @@ userSchema.pre('save', function(next){
     }
 })
 
+userSchema.statics.findByToken = function (token, cb){
+    var user = this;
+
+    jwt.verify(token,config.SECRET,(err,decode)=>{ //decode will give us back the user-Id
+        user.findOne({'_id':decode,'token':token}, (err, user)=>{
+            if(err) return cb(err);
+            cb(null, user)
+        })
+    })
+}
+
 // CREATING A CUSTOM METHOD - generating the token
 userSchema.methods.generateToken = function(cb){
     var user = this;
