@@ -24,6 +24,8 @@ mongoose.connect(config.DATABASE);
 
 // MODELS
 const {User} = require ('./models/user');
+const {Article} = require ('./models/article');
+
 
 //MID
 app.use('/css', express.static(__dirname + './../public/css'));
@@ -51,6 +53,14 @@ app.get('/login',auth,(req,res)=>{
 app.get('/dashboard',auth,(req,res)=>{
     if (!req.user) return res.redirect('/login');
     res.render('dashboard', {
+        dashboard:true,
+        isAdmin: req.user.role === 1 ? true : false
+    })
+})
+
+app.get('/dashboard/articles',auth,(req,res)=>{
+    if (!req.user) return res.redirect('/login');
+    res.render('admin_articles',{
         dashboard:true,
         isAdmin: req.user.role === 1 ? true : false
     })
@@ -87,6 +97,23 @@ app.post('/api/login', (req,res) =>{
                 res.cookie('auth', user.token).send('ok');
             })
         })
+    })
+})
+
+app.post('/api/add_article',auth,(req,res)=>{
+    //console.log(req.body)
+
+    const article = new Article({
+        ownerUsername: req.user.username,
+        ownerId:req.user._id,
+        title:req.body.title,
+        review:req.body.review,
+        rating:req.body.rating
+    });
+
+    article.save((err,doc)=> {
+        if (err) return res.status(400).send (err);
+        res.status(200).send(); 
     })
 })
 
