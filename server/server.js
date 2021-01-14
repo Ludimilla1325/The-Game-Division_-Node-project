@@ -25,6 +25,7 @@ mongoose.connect(config.DATABASE);
 // MODELS
 const {User} = require ('./models/user');
 const {Article} = require ('./models/article');
+const {UserReview} = require ('./models/user_reviews');
 
 
 //MID
@@ -64,11 +65,15 @@ app.get('/games/:id', auth,(req,res)=>{
     Article.findById(req.params.id,(err,article)=>{
         if(err) res.status(400).send(err);
 
-        res.render('article',{
-            date:moment(article.createdAt).format('MM/DD/YY'),
-            article,
-            review:addReview
+        UserReview.find({'postId':req.params.id}).exec((err,UserReviews) =>{
+            res.render('article',{
+                date:moment(article.createdAt).format('MM/DD/YY'),
+                article,
+                review:addReview,
+                UserReviews
+            })
         })
+
     })
 })
 

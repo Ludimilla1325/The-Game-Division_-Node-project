@@ -18,14 +18,14 @@
     <div class="user_reviews">
         <div class="user_reviews_wrapper">
             <h3>User reviews:</h3>
-
+            {{#each userReviews}}
                 <div class="item">
-                    <div class="username">USERNAME - <span> Rating: RATING/10</span></div>
+                    <div class="username">{{this.ownerUsername}} - <span> Rating: {{this.rating}}/10</span></div>
                     <div class="user_r">
-                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        {{this.review}}
                     </div>
                 </div>
-
+            {{/each}}
         
         </div>
         <div class="user_add_reviews_wrapper">
