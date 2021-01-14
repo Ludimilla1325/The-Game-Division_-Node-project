@@ -37,7 +37,14 @@ app.use(cookieParser());
 
 // GET
 app.get('/', (req,res) =>{
-    res.render('home')
+
+    Article.find().sort({_id:'asc'}).limit(10).exec((err,doc)=>{
+        if (err) return res.status(400).send(err);
+        res.render('home',{
+           articles:doc 
+        })
+    })
+
 })
 
 app.get('/register',auth, (req,res)=>{
