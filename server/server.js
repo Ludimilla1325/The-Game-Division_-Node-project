@@ -57,6 +57,21 @@ app.get('/login',auth,(req,res)=>{
     res.render('login')
 })
 
+app.get('/games/:id', auth,(req,res)=>{
+
+    let addReview = req.user ? true : false;
+
+    Article.findById(req.params.id,(err,article)=>{
+        if(err) res.status(400).send(err);
+
+        res.render('article',{
+            date:moment(article.createdAt).format('MM/DD/YY'),
+            article,
+            review:addReview
+        })
+    })
+})
+
 app.get('/dashboard',auth,(req,res)=>{
     if (!req.user) return res.redirect('/login');
     res.render('dashboard', {
