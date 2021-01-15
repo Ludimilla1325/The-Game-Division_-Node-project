@@ -65,12 +65,13 @@ app.get('/games/:id', auth,(req,res)=>{
     Article.findById(req.params.id,(err,article)=>{
         if(err) res.status(400).send(err);
 
-        UserReview.find({'postId':req.params.id}).exec((err,UserReviews) =>{
+        UserReview.find({'postId':req.params.id}).exec((err,userReviews) =>{
+            
             res.render('article',{
                 date:moment(article.createdAt).format('MM/DD/YY'),
                 article,
                 review:addReview,
-                UserReviews
+                userReviews
             })
         })
 
