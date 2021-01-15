@@ -31,9 +31,9 @@
         <div class="user_add_reviews_wrapper">
                 {{#if review}}
                 <h3>Add your review</h3>
-                <form id="user_review" data-id="">
+                <form id="user_review" data-id="{{article._id}}">
                     <div>
-                        <input type="hidden" id="titlePost" name="titlePost" value="">
+                        <input type="hidden" id="titlePost" name="titlePost" value="{{article.title}}">
                     </div>
                     <div>
                         <input type="text" id="rating" name="rating" placeholder="Add your rating form 1 to 10">
@@ -43,7 +43,7 @@
                     </div>
                     <button>Add review</button>
                 </form>
- 
+
                 {{else}}
                 <div class="register">
                     <a href="/login">
@@ -79,4 +79,27 @@
                 postData();
             }
 		});
+
+        function postData(){
+
+            const userReview = {
+                id:$('#user_review').data('id'),
+                review:$('#review').val(),
+                rating:$('#rating').val(),
+                titlePost:$('#titlePost').val(),
+            }
+
+            $.ajax({
+                type:'POST',
+                url:'/api/user_review',
+                data:JSON.stringify(userReview),
+                contentType:'application/json',
+                success:()=>{
+                    window.location.reload(false)
+                },
+                error:()=>{
+                    alert('problem!')
+                }
+            })
+        }
 </script>

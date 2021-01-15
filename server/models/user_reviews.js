@@ -31,7 +31,7 @@ const userReviewsSchema = mongoose.Schema({
         min:1,
         max:10
     }
-}, {timestamps:true});
+},{timestamps:true});
 
 const UserReview = mongoose.model('UserReview',userReviewsSchema);
 
