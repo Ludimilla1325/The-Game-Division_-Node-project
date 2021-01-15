@@ -106,6 +106,14 @@ app.get('/dashboard/reviews',auth,(req,res)=>{
 
     })
 })
+
+app.get('/dashboard/logout', auth,(req,res)=>{
+    req.user.deleteToken(req.token,(err,user)=>{
+        if(err) return res.status(400).send(err);
+        res.redirect('/')
+    })
+})
+
 //POST
 app.post('/api/register',(req,res)=>{
     //console.log(req.body)
