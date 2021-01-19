@@ -43,7 +43,8 @@ const userSchema = mongoose.Schema({
     }
 });
 
-userSchema.pre('save', function(next){
+//Here we r hashing the password that the person register
+userSchema.pre('save', function(next){ 
     var user = this;
 
     if (user.isModified('password')){
@@ -62,7 +63,7 @@ userSchema.pre('save', function(next){
 
 userSchema.statics.findByToken = function (token, cb){
     var user = this;
-
+//Verifique de maneira assíncrona o token fornecido usando um segredo ou uma chave pública para obter um token decodificado 
     jwt.verify(token,config.SECRET,(err,decode)=>{ //decode will give us back the user-Id
         user.findOne({'_id':decode,'token':token}, (err, user)=>{
             if(err) return cb(err);

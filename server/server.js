@@ -15,12 +15,12 @@ app.engine('hbs',hbs({
     layoutsDir:__dirname + './../views/layouts',
     partialsDir:__dirname + './../views/partials'
 }))
-app.set('view engine', 'hbs')
+app.set('view engine', 'hbs') //use a instância expressa para armazenar e recuperar variáveis.
 
 
 // ## DB ##
 mongoose.Promise = global.Promise;
-mongoose.connect(config.DATABASE);
+mongoose.connect('mongodb://localhost:27017/tgd_app');
 
 // MODELS
 const {User} = require ('./models/user');
