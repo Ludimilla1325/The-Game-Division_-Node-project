@@ -20,7 +20,7 @@ app.set('view engine', 'hbs') //use a instância expressa para armazenar e recup
 
 // ## DB ##
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/tgd_app');
+mongoose.connect(config.DATABASE);
 
 // MODELS
 const {User} = require ('./models/user');
