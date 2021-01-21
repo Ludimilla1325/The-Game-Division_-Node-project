@@ -4,12 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "cd views && npm run views",
-    "install-client": "cd views && npm install",
-    "heroku-postbuild":"npm run install-client && npm run build",
     "start":"node server/server.js",
-    "client":"cd views && npm start",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
     "node":"15.3.0"
