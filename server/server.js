@@ -6,7 +6,7 @@ const cookieParser = require ('cookie-parser');
 const moment = require('moment');
 const config = require ('./config/config').get(process.env.NODE_ENV);
 const app = express();
-
+require("dotenv").config();
 
 // ## HBS SETUP ##
 app.engine('hbs',hbs({
